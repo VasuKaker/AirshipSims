@@ -1,12 +1,12 @@
 import pandas as pd
 import subprocess
 import re
-from AirshipSims_PSVK.solar.airship_lowaltitude import get_pressure_at_altitude, get_temperature_at_altitude, get_viscosity_from_temperature, get_density_at_altitude, form_factor_ellipsoid, Cf_flat_plate
+from airship_lowaltitude import get_pressure_at_altitude, get_temperature_at_altitude, get_viscosity_from_temperature, get_density_at_altitude, form_factor_ellipsoid, Cf_flat_plate
 import math
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
-import AirshipSims_PSVK.solar.airship_lowaltitude as airship_lowaltitude
+import airship_lowaltitude as airship_lowaltitude
 
 POWER_PAYLOAD = 250
 
@@ -128,22 +128,30 @@ def backtest_airship(airship_results, solar_windspeed_data):
         
     return solar_windspeed_data_copy
 
-def visualize_battery_SOC(findings, name):
+def visualize_battery_SOC(findings, results, name):
     plt.figure(figsize=(10,6))
-    findings.to_csv("findings.csv")
     plt.plot(findings.index/24, findings['Battery Energy']/1000)
     plt.xlabel('Time (Hours)')
     plt.ylabel('Battery Energy (kWh)')
     plt.title('Battery Energy over Time')
     plt.grid(True)
+    params = ['length', 'diameter', 'mass_total', 'mass_battery', 'S_solar']
+    param_values = [results[param] for param in params]
+    legend_text = "\n".join([f"{param}: {value:.2f}" for param, value in zip(params, param_values)])
+    y_pos = min(findings['Battery Energy']) if  min(findings['Battery Energy']) < 0 else  min(findings['Battery Energy'])
+    plt.text(0, y_pos / 1000, legend_text, horizontalalignment='left', 
+         verticalalignment='bottom', fontsize=12, bbox=dict(facecolor='none', edgecolor='black'))
+
     plt.savefig(f'backtest_results/{name}.png')
+    # plt.show()
+
     # plt.show()
 
 def main(airspeed, battery_hours, filename):
     results = airship_lowaltitude.main(airspeed, battery_hours)
     solar_windspeed_data = pd.read_csv('processed_solar_wind_data_LA_2021.csv')
     findings = backtest_airship(results, solar_windspeed_data)
-    visualize_battery_SOC(findings, filename)
+    visualize_battery_SOC(findings, results, filename)
     return findings, results
 
 if __name__ == "__main__":

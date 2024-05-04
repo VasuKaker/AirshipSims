@@ -31,7 +31,7 @@ def compute_energy_consumption(airship_results, airspeed):
 
     # Conditions
     altitude = 30  # m, 65 kft = 19812 m
-    airspeed = max(airspeed, 5)  # m/s, wind speed at altitude
+    airspeed = airspeed  # m/s, wind speed at altitude
 
     P = get_pressure_at_altitude(altitude)
     T = get_temperature_at_altitude(altitude)
@@ -131,7 +131,7 @@ def backtest_airship(airship_results, solar_windspeed_data):
 def visualize_battery_SOC(findings, results, name):
     plt.figure(figsize=(10,6))
     plt.plot(findings.index/24, findings['Battery Energy']/1000)
-    plt.xlabel('Time (Hours)')
+    plt.xlabel('Time (Days)')
     plt.ylabel('Battery Energy (kWh)')
     plt.title('Battery Energy over Time')
     plt.grid(True)

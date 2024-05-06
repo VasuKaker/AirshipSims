@@ -34,7 +34,7 @@ def main(airspeed_val, battery_hours_val):
     ])
 
     opti.subject_to([
-        length / 100 < 1,
+        length / 10 < 1,
     ])
 
     diameter = 10 * opti.variable()

@@ -1,5 +1,5 @@
 import casadi as cas
-
+from aerosandbox.library.power_solar import mass_MPPT
 try:
     from atmosphere import *
     from aerodynamics import *
@@ -165,11 +165,11 @@ def main(airspeed_val, battery_hours_val):
     envelope_area_density = 1390 * 0.000051 # kg/m^2, a guess from mylar @ typical weather balloon thicknesses; from https://www.weather.gov/bmx/kidscorner_weatherballoons
     mass_envelope = envelope_area_density * S_wetted
     mass_structural = mass_envelope * (28.5 + 12.5 + 4 + 15) / (28.5) # from (relevant) mass fractions given in Fig. 1. of https://www.dglr.de/publikationen/2018/480209.pdf
-
+    mass_mppt = mass_MPPT(power)
 
     mass_payload = 30
 
-    mass_total = mass_structural + mass_payload + mass_propulsion
+    mass_total = mass_structural + mass_payload + mass_propulsion + mass_mppt 
 
     force_weight = mass_total * g
 
@@ -205,7 +205,7 @@ def main(airspeed_val, battery_hours_val):
     # print("xs is: ", xs)
     print_title = lambda s: print("\n********** %s **********" % s.upper())
 
-    vars_of_interest = ["length", "diameter", "propeller_diameter", "LD_effective", "S_wetted", "volume", "mass_total", "mass_payload", "mass_structural", "mass_propulsion", "power", "solar_area_fraction", "mass_battery", "BATTERY_SPECIFIC_ENERGY", "S_solar"]
+    vars_of_interest = ["length", "diameter", "propeller_diameter", "LD_effective", "S_wetted", "volume", "mass_total", "mass_payload", "mass_structural", "mass_propulsion", "power", "solar_area_fraction", "mass_battery", "BATTERY_SPECIFIC_ENERGY", "S_solar", "mass_mppt"]
     print_title("Results")
 
     # for var_name in vars_of_interest:

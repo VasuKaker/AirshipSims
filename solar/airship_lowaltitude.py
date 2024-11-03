@@ -205,7 +205,7 @@ def main(airspeed_val, battery_hours_val):
     # print("xs is: ", xs)
     print_title = lambda s: print("\n********** %s **********" % s.upper())
 
-    vars_of_interest = ["length", "diameter", "propeller_diameter", "LD_effective", "S_wetted", "volume", "mass_total", "mass_payload", "mass_structural", "mass_propulsion", "power", "solar_area_fraction", "mass_battery", "BATTERY_SPECIFIC_ENERGY", "S_solar", "mass_mppt"]
+    vars_of_interest = ["length", "diameter", "propeller_diameter", "LD_effective", "S_wetted", "volume", "mass_total", "mass_payload", "mass_structural", "mass_propulsion", "power", "solar_area_fraction", "mass_battery", "BATTERY_SPECIFIC_ENERGY", "S_solar", "mass_mppt", "Cf_fuse"]
     print_title("Results")
 
     # for var_name in vars_of_interest:
@@ -227,6 +227,23 @@ Takeaways:
 """
 
 if __name__ == "__main__":
-    airspeed_val = 5
+    airspeed_val = 20
     battery_hours_val = 24
     print(main(airspeed_val, battery_hours_val))
+
+
+### v0.1 prototype, see all risks, and build a small prototype to see the risks
+### hydrogen fuelling -- 
+### 5 meters length
+### talk to Dave and Tod
+### solar circuit wiring
+
+### solar, batteries, MPPTs, wires
+### MPPT -- genasun gv5/gv10
+### https://fullbattery.com/products/sunpower-c60-solar-cell -- solar cells
+### batteries -- li-ion, 18650
+### DIY RC forums, recruit a DBF member
+### solar seaplane library
+### BMS 
+
+### cds copernicus climate data source

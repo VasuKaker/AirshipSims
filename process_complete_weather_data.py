@@ -17,4 +17,9 @@ if __name__ == "__main__":
     processed_data.to_csv('AirshipSims_PeterSharpe/solar/processed_solar_wind_data_LA_2021.csv')
     processed_data.to_csv('processed_solar_wind_data_LA_2021.csv')
     
-    
+### How high to fly for the application to provide value
+### How does wind speed change with altitude
+### cds copernicus climate data source -- API key
+### ERA5 -- available for a lot of altitudes, hour resolution, API access
+### OpenVSP: what would airship geometry look like, 
+### height + speed

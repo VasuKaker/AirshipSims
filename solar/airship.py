@@ -75,7 +75,7 @@ q = 0.5 * rho * airspeed ** 2
 Re_fuse = rho * airspeed * length / mu
 form_factor = form_factor_ellipsoid(fineness_ratio)
 Cf_fuse = Cf_flat_plate(Re_fuse) * form_factor
-
+print("Cf_fuse is: ", Cf_fuse)
 drag_fuse = q * Cf_fuse * S_wetted
 
 drag_total = drag_fuse / 0.51  # taken from typical blimp ratios given in link at top
@@ -215,6 +215,7 @@ if __name__ == "__main__":
         "mass_propulsion",
         "power",
         "solar_area_fraction",
+        "Cf_fuse"
     ])
 
     """

@@ -1,7 +1,8 @@
 from backtest_airship_specs import main
 import pandas as pd
 import json
-
+from tqdm import tqdm
+import argparse
 # main(5, 24, 'test.png')
 
 def eval_battery_soc(findings):
@@ -21,9 +22,26 @@ if __name__ == '__main__':
     df = pd.DataFrame(columns=vars_of_interest)
     findings_dict = {}
 
-    for airspeed in range(1, 16):
+    parser = argparse.ArgumentParser(description="Script with blimp_speed argument.")
+    
+    # Add the -a_s / --additional_speed argument
+    parser.add_argument(
+        '-b_s', '--blimp_speed',
+        type=float,  # Use float or int as appropriate
+        default=0.0,  # Set a default value, if needed
+        help="Specify an additional speed value"
+    )
+    
+    # Parse the arguments
+    args = parser.parse_args()
+    
+    # Access the additional speed argument
+    blimp_speed = float(args.blimp_speed)
+
+
+    for airspeed in tqdm(range(1, 16)):
         for battery_hours_val in range(5, 155, 5):
-            findings, airship_dim = main(airspeed, battery_hours_val, f'test_{airspeed}_{battery_hours_val}')
+            findings, airship_dim = main(airspeed, battery_hours_val, f'test_{airspeed}_{battery_hours_val}', blimp_speed)
             findings_dict[f'{airspeed}_{battery_hours_val}'] = findings['Battery Energy'].tolist()
             
             score = eval_battery_soc(findings)

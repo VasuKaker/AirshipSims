@@ -88,7 +88,7 @@ def compute_energy_consumption(airship_results, airspeed):
 
 
 
-def backtest_airship(airship_results, solar_windspeed_data):
+def backtest_airship(airship_results, solar_windspeed_data, additional_speed):
     print("airship_results is: ", airship_results)
     initial_battery_energy = airship_results["mass_battery"] * airship_results["BATTERY_SPECIFIC_ENERGY"]
     solar_area = airship_results["S_solar"]
@@ -96,8 +96,10 @@ def backtest_airship(airship_results, solar_windspeed_data):
     # Make a copy of solar_windspeed_data
     solar_windspeed_data_copy = solar_windspeed_data[:]
 
+    print("additional_speed is: ", additional_speed)
+    print(type(additional_speed))
     # Apply compute_energy_consumption function on the dataframe, looking at the 'Wind Speed' column
-    solar_windspeed_data_copy['Energy Consumption'] = solar_windspeed_data_copy['Wind Speed'].apply(lambda x: compute_energy_consumption(airship_results, x))
+    solar_windspeed_data_copy['Energy Consumption'] = solar_windspeed_data_copy['Wind Speed'].apply(lambda x: compute_energy_consumption(airship_results, x + additional_speed))
 
     # Apply compute_solar_input on the dataframe, looking at the 'GHI' column
     solar_windspeed_data_copy['Solar Input'] = solar_windspeed_data_copy['GHI'].apply(lambda x: compute_solar_input(airship_results, x))
@@ -147,10 +149,10 @@ def visualize_battery_SOC(findings, results, name):
 
     # plt.show()
 
-def main(airspeed, battery_hours, filename):
+def main(airspeed, battery_hours, filename, additional_speed=0):
     results = airship_lowaltitude.main(airspeed, battery_hours)
     solar_windspeed_data = pd.read_csv('processed_solar_wind_data_LA_2021.csv')
-    findings = backtest_airship(results, solar_windspeed_data)
+    findings = backtest_airship(results, solar_windspeed_data, additional_speed)
     visualize_battery_SOC(findings, results, filename)
     return findings, results
 
@@ -159,6 +161,8 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--filename', type=str, help='Filename to save the backtesting results to')
     parser.add_argument('-a', '--airspeed', type=float, help='Airspeed for the airship')
     parser.add_argument('-b', '--battery_hours', type=float, help='Battery hours for the airship')
+    parser.add_argument('-b_s', '--blimp_speed', type=float, help='Blimp speed on top of wind')
+    
     
     args = parser.parse_args()
     filename = args.filename

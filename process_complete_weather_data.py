@@ -14,9 +14,9 @@ def process_weather_data(file_name):
 
 if __name__ == "__main__":
     processed_data = process_weather_data('historical_solar_data_complete_LA_2021.csv')
-    processed_data.to_csv('AirshipSims_PeterSharpe/solar/processed_solar_wind_data_LA_2021.csv')
+    processed_data.to_csv('solar/processed_solar_wind_data_LA_2021.csv')
     processed_data.to_csv('processed_solar_wind_data_LA_2021.csv')
-    
+
 ### How high to fly for the application to provide value
 ### How does wind speed change with altitude
 ### cds copernicus climate data source -- API key
